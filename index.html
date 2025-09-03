@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>JWPlayer – Ultimate Mobile Video Player</title>
   <meta name="description" content="GitHub Pages-ready JWPlayer app. Play M3U8/MP4, optional poster & subtitles, watermark text, dark/light theme, and embed code generator." />
-  <!-- JWPlayer core (public CDN) -->
+  <!-- JWPlayer core -->
   <script src="https://ssl.p.jwpcdn.com/player/v/8.37.1/jwplayer.js"></script>
   <style>
     :root{--bg:#0b0f14;--card:#0f141b;--tx:#e7edf6;--mut:#93a6ba;--ring:#2b90d9;--acc:#4cc9f0;--bd:#1b2633}
@@ -18,7 +18,7 @@
     .title{font-weight:800}
     .mut{color:var(--mut);font-size:12px}
     .toggle{display:inline-flex;align-items:center;gap:8px}
-    .card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px}
+    .card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px;margin-top:12px}
     .grid{display:grid;grid-template-columns:1fr;gap:10px}
     @media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
     label{display:block;margin-bottom:6px;font-size:13px;color:var(--mut)}
@@ -50,177 +50,164 @@
       <label class="toggle" title="থিম বদলান">
         <input id="themeToggle" type="checkbox"> <span class="mut">Light</span>
       </label>
-    </div><!-- Controls -->
-<div class="card" style="margin-top:12px">
-  <div class="grid">
-    <div>
-      <label>ভিডিও URL (M3U8/MP4/DASH)</label>
-      <input id="src" placeholder="https://example.com/stream.m3u8 বা https://example.com/video.mp4">
-      <div class="hint">খালি রাখতে পারেন; পরে দিলেও কাজ করবে।</div>
     </div>
-    <div>
-      <label>Poster (ঐচ্ছিক)</label>
-      <input id="poster" placeholder="https://example.com/poster.jpg">
+
+    <!-- Controls -->
+    <div class="card form-card">
+      <div class="grid">
+        <div>
+          <label>ভিডিও URL (M3U8/MP4/DASH)</label>
+          <input id="src" placeholder="https://example.com/stream.m3u8 বা https://example.com/video.mp4">
+        </div>
+        <div>
+          <label>Poster (ঐচ্ছিক)</label>
+          <input id="poster" placeholder="https://example.com/poster.jpg">
+        </div>
+        <div>
+          <label>Subtitles (VTT – ঐচ্ছিক)</label>
+          <input id="subtitle" placeholder="https://example.com/subs.vtt">
+        </div>
+        <div>
+          <label>Watermark টেক্সট (ঐচ্ছিক)</label>
+          <input id="logoText" placeholder="Cric Lives TV">
+        </div>
+      </div>
+      <div class="bar" style="margin-top:10px">
+        <label class="toggle"><input id="autoplay" type="checkbox"> Autoplay</label>
+        <label class="toggle"><input id="muted" type="checkbox"> Muted</label>
+        <label class="toggle"><input id="controls" type="checkbox" checked> Controls</label>
+        <label class="toggle"><input id="loop" type="checkbox"> Loop</label>
+        <select id="ratio" style="max-width:180px">
+          <option value="16:9" selected>16:9</option>
+          <option value="4:3">4:3</option>
+          <option value="21:9">21:9</option>
+        </select>
+      </div>
+      <div class="bar" style="margin-top:10px">
+        <button id="playBtn">▶ Play</button>
+        <button id="clearBtn" class="ghost">Reset</button>
+      </div>
     </div>
-    <div>
-      <label>Subtitles (VTT – ঐচ্ছিক)</label>
-      <input id="subtitle" placeholder="https://example.com/subs.vtt">
+
+    <!-- Player -->
+    <div class="player-card rel" style="margin-top:12px">
+      <div id="player"></div>
+      <div id="wm" class="wm" style="display:none"></div>
     </div>
-    <div>
-      <label>Watermark টেক্সট (ঐচ্ছিক)</label>
-      <input id="logoText" placeholder="Cric Lives TV">
+
+    <!-- Embed generator -->
+    <div class="card form-card">
+      <div class="bar">
+        <button id="genBtn">Generate Embed</button>
+        <button id="copyBtn" class="ghost copy">Copy</button>
+      </div>
+      <textarea id="embedCode" class="code" rows="4" spellcheck="false" placeholder="এখানে এমবেড কোড আসবে"></textarea>
     </div>
+
+    <div class="card form-card">
+      <details open>
+        <summary><strong>FAQ</strong></summary>
+        <ul>
+          <li>Poster বা Subtitles না দিলেও প্লেয়ার কাজ করবে।</li>
+          <li>M3U8 (HLS) সেরা সাপোর্টেড। MP4-ও চলবে।</li>
+          <li>Embed লিঙ্কে `embed=1` থাকলে শুধু ফুলস্ক্রিন প্লেয়ার আসবে।</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="footer form-card">© <span id="yy"></span> JWPlayer Mobile App • Built for GitHub Pages</div>
   </div>
-  <div class="bar" style="margin-top:10px">
-    <label class="toggle"><input id="autoplay" type="checkbox"> Autoplay</label>
-    <label class="toggle"><input id="muted" type="checkbox"> Muted</label>
-    <label class="toggle"><input id="controls" type="checkbox" checked> Controls</label>
-    <label class="toggle"><input id="loop" type="checkbox"> Loop</label>
-    <select id="ratio" style="max-width:180px">
-      <option value="16:9" selected>16:9</option>
-      <option value="4:3">4:3</option>
-      <option value="21:9">21:9</option>
-    </select>
-  </div>
-  <div class="bar" style="margin-top:10px">
-    <button id="playBtn">▶ Play</button>
-    <button id="clearBtn" class="ghost">Reset</button>
-  </div>
-</div>
 
-<!-- Player -->
-<div class="player-card rel" style="margin-top:12px">
-  <div id="player"></div>
-  <div id="wm" class="wm" style="display:none"></div>
-</div>
-
-<!-- Embed generator -->
-<div class="card" style="margin-top:12px">
-  <div class="bar">
-    <button id="genBtn">Generate Embed</button>
-    <button id="copyBtn" class="ghost copy">Copy</button>
-  </div>
-  <textarea id="embedCode" class="code" rows="4" spellcheck="false" placeholder="এখানে এমবেড কোড আসবে"></textarea>
-  <div class="hint">আপনার সাইটে ব্যবহার করুন: <code>&lt;iframe src="YOUR-PAGE?src=...&amp;poster=...&amp;subtitle=..." allowfullscreen&gt;&lt;/iframe&gt;</code></div>
-</div>
-
-<!-- FAQ -->
-<div class="card" style="margin-top:12px">
-  <details open>
-    <summary><strong>FAQ</strong></summary>
-    <ul>
-      <li>Poster বা Subtitles না দিলেও প্লেয়ার কাজ করবে।</li>
-      <li>M3U8 (HLS) সেরা সাপোর্টেড। MP4-ও চলবে। DASH আপনার JW প্ল্যানের উপর নির্ভরশীল।</li>
-      <li>Embed কোড কপির পর যেকোনো ওয়েবসাইটে iframe দিয়ে শেয়ার করতে পারবেন।</li>
-    </ul>
-  </details>
-</div>
-
-<div class="footer">© <span id="yy"></span> JWPlayer Mobile App • Built for GitHub Pages</div>
-
-  </div><script>
-  // ==== JWPlayer license key (from you) ====
+<script>
+  // JWPlayer license key
   window.jwplayer && (jwplayer.key = 'eNFaXCjyURVoCCGiHp7HTQ3hDhE/AfL0g8VE1fRbL84=' );
 
-  // ==== Theme toggle ====
   const rt = document.documentElement;
   const themeToggle = document.getElementById('themeToggle');
   themeToggle.addEventListener('change', ()=>{
     rt.setAttribute('data-theme', themeToggle.checked ? 'light' : 'dark');
   });
 
-  // ==== UI elements ====
   const $ = id => document.getElementById(id);
-  const srcI = $('src'), posterI = $('poster'), subI = $('subtitle'), logoI = $('logoText');
-  const autoplayI = $('autoplay'), mutedI = $('muted'), controlsI = $('controls'), loopI = $('loop'), ratioI = $('ratio');
-  const wm = $('wm');
+  const srcI=$('src'), posterI=$('poster'), subI=$('subtitle'), logoI=$('logoText');
+  const autoplayI=$('autoplay'), mutedI=$('muted'), controlsI=$('controls'), loopI=$('loop'), ratioI=$('ratio');
+  const wm=$('wm');
 
-  // Year
-  $('yy').textContent = new Date().getFullYear();
+  $('yy').textContent=new Date().getFullYear();
+  const q=new URLSearchParams(location.search);
+  if(q.get('src')) srcI.value=decodeURIComponent(q.get('src'));
+  if(q.get('poster')) posterI.value=decodeURIComponent(q.get('poster'));
+  if(q.get('subtitle')) subI.value=decodeURIComponent(q.get('subtitle'));
+  if(q.get('logo')) logoI.value=decodeURIComponent(q.get('logo'));
+  if(q.get('autoplay')==='1') autoplayI.checked=true;
+  if(q.get('muted')==='1') mutedI.checked=true;
+  if(q.get('ratio')) ratioI.value=q.get('ratio');
 
-  // Read query (for embeds)
-  const q = new URLSearchParams(location.search);
-  if(q.get('src')) srcI.value = decodeURIComponent(q.get('src'));
-  if(q.get('poster')) posterI.value = decodeURIComponent(q.get('poster'));
-  if(q.get('subtitle')) subI.value = decodeURIComponent(q.get('subtitle'));
-  if(q.get('logo')) logoI.value = decodeURIComponent(q.get('logo'));
-  if(q.get('autoplay')==='1') autoplayI.checked = true;
-  if(q.get('muted')==='1') mutedI.checked = true;
-  if(q.get('ratio')) ratioI.value = q.get('ratio');
-
-  // Player setup
-  let playerInstance = null;
+  let playerInstance=null;
   function setupPlayer(){
-    const file = srcI.value.trim();
-    const image = posterI.value.trim();
-    const sub = subI.value.trim();
-    const logo = logoI.value.trim();
+    const file=srcI.value.trim();
+    const image=posterI.value.trim();
+    const sub=subI.value.trim();
+    const logo=logoI.value.trim();
+    const tracks=[];
+    if(sub){ tracks.push({file:sub,label:'Subtitles',kind:'captions','default':true}); }
 
-    // Optional tracks
-    const tracks = [];
-    if(sub){
-      tracks.push({ file: sub, label: 'Subtitles', kind: 'captions', 'default': true });
-    }
-
-    // Aspect ratio mapping
-    const ratioMap = { '16:9':'16:9','4:3':'4:3','21:9':'21:9' };
-
-    // Clean previous
-    if(playerInstance){ try { playerInstance.remove(); } catch(e){} }
-
-    // Create player
-    playerInstance = jwplayer('player').setup({
-      file: file || undefined,          // optional
-      image: image || undefined,        // optional
-      tracks: tracks,                   // optional
-      width: '100%',
-      aspectratio: ratioMap[ratioI.value] || '16:9',
-      autostart: autoplayI.checked ? true : false,
-      mute: mutedI.checked ? true : false,
-      controls: controlsI.checked,
-      repeat: loopI.checked,
-      playbackRateControls: true,
+    if(playerInstance){ try{playerInstance.remove();}catch(e){} }
+    playerInstance=jwplayer('player').setup({
+      file:file||undefined,
+      image:image||undefined,
+      tracks:tracks,
+      width:'100%',
+      aspectratio:ratioI.value||'16:9',
+      autostart:autoplayI.checked,
+      mute:mutedI.checked,
+      controls:controlsI.checked,
+      repeat:loopI.checked,
+      playbackRateControls:true
     });
 
-    // Watermark overlay
-    wm.style.display = logo ? 'inline-flex' : 'none';
-    wm.textContent = logo || '';
+    wm.style.display=logo?'inline-flex':'none';
+    wm.textContent=logo||'';
   }
 
-  // Buttons
-  $('playBtn').addEventListener('click', setupPlayer);
-  $('clearBtn').addEventListener('click', ()=>{
-    srcI.value = posterI.value = subI.value = logoI.value = '';
-    autoplayI.checked = false; mutedI.checked = false; controlsI.checked = true; loopI.checked = false; ratioI.value = '16:9';
-    if(playerInstance){ try { playerInstance.remove(); } catch(e){} }
-    wm.style.display = 'none';
+  $('playBtn').addEventListener('click',setupPlayer);
+  $('clearBtn').addEventListener('click',()=>{
+    srcI.value=posterI.value=subI.value=logoI.value='';
+    autoplayI.checked=false; mutedI.checked=false; controlsI.checked=true; loopI.checked=false; ratioI.value='16:9';
+    if(playerInstance){ try{playerInstance.remove();}catch(e){} }
+    wm.style.display='none';
   });
 
-  // Auto-play if src present
   if(srcI.value){ setupPlayer(); }
 
-  // Embed generator
-  function currentPageBase(){
-    // Keep same page without query
-    return location.origin + location.pathname;
-  }
+  function currentPageBase(){ return location.origin+location.pathname; }
   function genEmbed(){
-    const u = new URL(currentPageBase());
-    const add = (k,v)=>{ if(v) u.searchParams.set(k,encodeURIComponent(v)); };
-    add('src', srcI.value.trim());
-    add('poster', posterI.value.trim());
-    add('subtitle', subI.value.trim());
-    add('logo', logoI.value.trim());
-    if(autoplayI.checked) u.searchParams.set('autoplay','1');
-    if(mutedI.checked) u.searchParams.set('muted','1');
-    if(ratioI.value && ratioI.value!=='16:9') u.searchParams.set('ratio', ratioI.value);
+    const u=new URL(currentPageBase());
+    const add=(k,v)=>{if(v)u.searchParams.set(k,encodeURIComponent(v));};
+    add('src',srcI.value.trim());
+    add('poster',posterI.value.trim());
+    add('subtitle',subI.value.trim());
+    add('logo',logoI.value.trim());
+    if(autoplayI.checked)u.searchParams.set('autoplay','1');
+    if(mutedI.checked)u.searchParams.set('muted','1');
+    if(ratioI.value&&ratioI.value!=='16:9')u.searchParams.set('ratio',ratioI.value);
+    u.searchParams.set('embed','1'); // 👈 embed flag
 
-    const iframe = `<iframe src="${u.href}" width="100%" height="100%" style="aspect-ratio: 16/9; border:0;" allowfullscreen referrerpolicy="no-referrer"></iframe>`;
-    $('embedCode').value = iframe;
+    const iframe=`<iframe src="${u.href}" width="100%" height="100%" style="aspect-ratio:16/9;border:0;" allowfullscreen referrerpolicy="no-referrer"></iframe>`;
+    $('embedCode').value=iframe;
   }
-  $('genBtn').addEventListener('click', genEmbed);
-  $('copyBtn').addEventListener('click', async ()=>{
-    try{ await navigator.clipboard.writeText($('embedCode').value); $('copyBtn').textContent='Copied!'; setTimeout(()=>$('copyBtn').textContent='Copy',1200);}catch(e){ alert('Copy করতে ব্যর্থ: ' + e.message); }
+  $('genBtn').addEventListener('click',genEmbed);
+  $('copyBtn').addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText($('embedCode').value);$('copyBtn').textContent='Copied!';setTimeout(()=>{$('copyBtn').textContent='Copy';},1200);}catch(e){alert('Copy ব্যর্থ: '+e.message);}
   });
-</script></body>
-</html>
+
+  // ==== Embed mode check ====
+  if(q.get('embed')==='1'){
+    document.querySelectorAll('.form-card,.top').forEach(el=>el.style.display='none');
+    document.body.style.margin="0";
+    document.querySelector('.player-card').style.border="none";
+    document.querySelector('.player-card').style.borderRadius="0";
+  }
+</script>
+</body>
+            </html>
